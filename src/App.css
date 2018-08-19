@@ -9,7 +9,8 @@
 
 .splash-image {
   align-self: center;
-  height: 50vh; }
+  height: 50vh;
+  opacity: 0.5; }
 
 .splash-title {
   color: rgba(255, 255, 255, 0.5);
