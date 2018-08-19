@@ -12,11 +12,30 @@
 .splash-image {
   align-self: center;
   height: 25vh;
-  opacity: 0.5;
+  opacity: 0.2;
+  transition: 0.1s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+}
+
+.loaded-image {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
 }
 
 .splash-title {
-  color: rgba(255,255,255,0.5);
+  color: #FFFFFF;
+  cursor: default;
   font-size: 1.5em;
   margin-top: 1.5em;
+  opacity: 0.2;
+  transition: 0.15s ease-in-out;
+  &:hover {
+    opacity: 0.5;
+  }
 }
