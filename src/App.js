@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import fs from 'fs';
 const electron = window.require('electron');
 const { remote } = electron;
 const { dialog } = remote;
@@ -22,8 +21,6 @@ class App extends Component {
     if(!this.state.showImage){
       return null;
     }
-
-    console.log(extension);
 
     if(extension !== undefined && !supportedFileTypes.includes(extension)){
       this.setState({
@@ -65,7 +62,7 @@ class App extends Component {
         {!this.state.showImage &&
           <div className="splash">
             <img onClick={function(){microscope.openFile()}} src="./img/splash.svg" alt="Microscope Logo" className="splash-image" />
-            <span className="splash-title">Open an Image</span>
+            <span className="splash-title">Open an Image File</span>
           </div>
         }
 
