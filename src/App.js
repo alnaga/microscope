@@ -15,12 +15,21 @@ class App extends Component {
   }
 
   viewImage(filePath) {
-    console.log(filePath);
-    // filePath = 'file:/' + filePath;
-    // console.log(filePath);
+    filePath = 'file://' + filePath;
+    let extension = filePath.split('.').pop().toLowerCase();
+    let supportedFileTypes = ['png', 'jpg', 'jpeg'];
 
     if(!this.state.showImage){
-      return null
+      return null;
+    }
+
+    console.log(extension);
+
+    if(extension !== undefined && !supportedFileTypes.includes(extension)){
+      this.setState({
+        showImage: false
+      });
+      return null;
     }
 
     return (
