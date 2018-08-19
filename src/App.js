@@ -9,8 +9,8 @@ class App extends Component {
     return (
       <div className="microscope">
         <div class="splash">
-          <img src="./img/splash.png" alt="Microscope Logo" class="splash-image"></img>
-          <span class="splash-title">Open an image.</span>
+          <img src="./img/splash.svg" alt="Microscope Logo" class="splash-image"></img>
+          <span class="splash-title">Open an Image</span>
         </div>
     </div>
     );

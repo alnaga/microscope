@@ -9,10 +9,10 @@
 
 .splash-image {
   align-self: center;
-  height: 50vh;
+  height: 25vh;
   opacity: 0.5; }
 
 .splash-title {
   color: rgba(255, 255, 255, 0.5);
   font-size: 1.5em;
-  margin-top: 0.5em; }
+  margin-top: 1.5em; }
