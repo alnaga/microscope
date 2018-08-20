@@ -28,6 +28,12 @@
   justify-content: center;
 }
 
+.pannable {
+  &:hover {
+    cursor: grab;
+  }
+}
+
 .splash-title {
   color: #FFFFFF;
   cursor: default;

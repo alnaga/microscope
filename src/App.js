@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 const electron = window.require('electron');
 const { remote } = electron;
@@ -13,8 +14,18 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if(this.state.showImage){
+      const image = document.getElementsByClassName('loaded-image');
+      console.log(image);
+      console.log(image[0].clientHeight);
+      console.log(image[0].clientWidth);
+    }
+  }
+
   viewImage(filePath) {
     filePath = 'file://' + filePath;
+    let microscope = this;
     let extension = filePath.split('.').pop().toLowerCase();
     let supportedFileTypes = ['png', 'jpg', 'jpeg'];
 
@@ -30,10 +41,24 @@ class App extends Component {
     }
 
     return (
-      <div className="loaded-image">
-        <img alt="Content" src={filePath} />
+      <div className='loaded-image'>
+      <img
+          alt="Content"
+          onMouseDown={function(e){
+            microscope.startPan(e)
+          }}
+
+          onMouseUp={function(e){
+            microscope.stopPan(e)
+          }}
+
+          src={filePath} />
       </div>
     )
+  }
+
+  isPannable(image) {
+    console.log(image.clientWidth, image.offsetHeight);
   }
 
   openFile() {
@@ -51,10 +76,18 @@ class App extends Component {
     });
   }
 
+  startPan(e) {
+    e.preventDefault()
+    console.log('should pan');
+  }
+
+  stopPan(e) {
+    console.log('stopped panning');
+  }
 
   render() {
     let microscope = this;
-    let {filePath} = this.state;
+    let { filePath } = this.state;
 
     return (
       <div className="microscope">
