@@ -15,37 +15,55 @@ class App extends Component {
       pannable: false,
       showImage: false
     }
-    this.getDimensions = this.getDimensions.bind(this);
   }
 
-  getDimensions({ target: image }) {
+  componentDidMount() {
+    window.addEventListener('resize', this.getImageDimensions);
+  }
+
+  getImageDimensions = ({ target: image }) => {
+    if(!this.state.showImage){
+      return;
+    }
+    
+    console.log('image');
     this.setState({
       imageDimensions:{
         height: image.offsetHeight,
         width: image.offsetWidth
-      },
+      }
+    });
+
+    setTimeout(
+      () => {
+        this.getWindowDimensions();
+      }, 1
+    );
+  }
+
+  getWindowDimensions = () => {
+    console.log('window');
+    this.setState({
       windowDimensions:{
         height: window.innerHeight,
         width: window.innerWidth,
       }
     });
+
     setTimeout(
       () => {
-        this.onLoadImage();
+        this.handleLoadImage();
       }, 1
     );
   }
 
-  onLoadImage() {
+  handleLoadImage() {
     let { imageDimensions = null, windowDimensions = null } = this.state;
-    if(imageDimensions.width > windowDimensions.width
-      ||
-      imageDimensions.height > windowDimensions.height){
-      this.setState({
-        pannable: true
-      })
+    if(imageDimensions.width > windowDimensions.width || imageDimensions.height > windowDimensions.height){
+        this.setState({
+          pannable: true
+        })
     }
-
   }
 
   viewImage(filePath) {
@@ -76,7 +94,9 @@ class App extends Component {
             this.stopPan(e)
           }}
 
-          onLoad={this.getDimensions}
+          onLoad={
+            this.getImageDimensions
+          }
 
           src={filePath} />
       </div>
