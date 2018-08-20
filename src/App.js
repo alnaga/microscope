@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import _ from 'underscore';
 const electron = window.require('electron');
 const { remote } = electron;
 const { dialog } = remote;
@@ -11,16 +12,21 @@ class App extends Component {
       imageDimensions: {},
       windowDimensions: {},
       filePath: undefined,
+      pannable: false,
       showImage: false
     }
-    this.getImageDimensions = this.getImageDimensions.bind(this);
+    this.getDimensions = this.getDimensions.bind(this);
   }
 
-  getImageDimensions({ target: image }) {
+  getDimensions({ target: image }) {
     this.setState({
       imageDimensions:{
         height: image.offsetHeight,
         width: image.offsetWidth
+      },
+      windowDimensions:{
+        height: window.innerHeight,
+        width: window.innerWidth,
       }
     });
     setTimeout(
@@ -31,7 +37,14 @@ class App extends Component {
   }
 
   onLoadImage() {
-    let { width = null, height = null } = this.state.imageDimensions;
+    let { imageDimensions = null, windowDimensions = null } = this.state;
+    if(imageDimensions.width > windowDimensions.width
+      ||
+      imageDimensions.height > windowDimensions.height){
+      this.setState({
+        pannable: true
+      })
+    }
 
   }
 
@@ -52,7 +65,7 @@ class App extends Component {
     }
 
     return (
-      <div className='loaded-image'>
+      <div className={this.state.pannable ? 'loaded-image pannable' : 'loaded-image'}>
       <img
           alt="Content"
           onMouseDown={ (e) => {
@@ -63,7 +76,7 @@ class App extends Component {
             this.stopPan(e)
           }}
 
-          onLoad={this.getImageDimensions}
+          onLoad={this.getDimensions}
 
           src={filePath} />
       </div>
