@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import './App.css';
 const electron = window.require('electron');
 const { remote } = electron;
@@ -9,23 +8,35 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      imageDimensions: {},
+      windowDimensions: {},
       filePath: undefined,
       showImage: false
     }
+    this.getImageDimensions = this.getImageDimensions.bind(this);
   }
 
-  componentDidUpdate() {
-    if(this.state.showImage){
-      const image = document.getElementsByClassName('loaded-image');
-      console.log(image);
-      console.log(image[0].clientHeight);
-      console.log(image[0].clientWidth);
-    }
+  getImageDimensions({ target: image }) {
+    this.setState({
+      imageDimensions:{
+        height: image.offsetHeight,
+        width: image.offsetWidth
+      }
+    });
+    setTimeout(
+      () => {
+        this.onLoadImage();
+      }, 1
+    );
+  }
+
+  onLoadImage() {
+    let { width = null, height = null } = this.state.imageDimensions;
+
   }
 
   viewImage(filePath) {
     filePath = 'file://' + filePath;
-    let microscope = this;
     let extension = filePath.split('.').pop().toLowerCase();
     let supportedFileTypes = ['png', 'jpg', 'jpeg'];
 
@@ -44,13 +55,15 @@ class App extends Component {
       <div className='loaded-image'>
       <img
           alt="Content"
-          onMouseDown={function(e){
-            microscope.startPan(e)
+          onMouseDown={ (e) => {
+            this.startPan(e)
           }}
 
-          onMouseUp={function(e){
-            microscope.stopPan(e)
+          onMouseUp={ (e) => {
+            this.stopPan(e)
           }}
+
+          onLoad={this.getImageDimensions}
 
           src={filePath} />
       </div>
