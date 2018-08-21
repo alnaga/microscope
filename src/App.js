@@ -10,7 +10,10 @@ class App extends Component {
     super(props);
     this.state = {
       imageDimensions: {},
-      windowDimensions: {},
+      windowDimensions: {
+        height: document.body.clientHeight,
+        width: document.body.clientWidth
+      },
       filePath: undefined,
       pannable: false,
       showImage: false
@@ -18,35 +21,26 @@ class App extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.getImageDimensions);
+    window.addEventListener('resize', () => {
+      this.setState({
+        windowDimensions:{
+          height: document.body.clientHeight,
+          width: document.body.clientWidth,
+        }
+      });
+      this.handleLoadImage();
+    });
   }
 
   getImageDimensions = ({ target: image }) => {
     if(!this.state.showImage){
       return;
     }
-    
-    console.log('image');
+
     this.setState({
       imageDimensions:{
         height: image.offsetHeight,
         width: image.offsetWidth
-      }
-    });
-
-    setTimeout(
-      () => {
-        this.getWindowDimensions();
-      }, 1
-    );
-  }
-
-  getWindowDimensions = () => {
-    console.log('window');
-    this.setState({
-      windowDimensions:{
-        height: window.innerHeight,
-        width: window.innerWidth,
       }
     });
 
@@ -58,12 +52,23 @@ class App extends Component {
   }
 
   handleLoadImage() {
-    let { imageDimensions = null, windowDimensions = null } = this.state;
+    let { imageDimensions = null, windowDimensions } = this.state;
+    // console.log(this.state);
     if(imageDimensions.width > windowDimensions.width || imageDimensions.height > windowDimensions.height){
         this.setState({
           pannable: true
         })
     }
+    else {
+      this.setState({
+        pannable: false
+      })
+    }
+  }
+
+  getImagePannableClass() {
+    // console.log(this.state);
+    return this.state.pannable ? 'pannable' : '';
   }
 
   viewImage(filePath) {
@@ -83,7 +88,7 @@ class App extends Component {
     }
 
     return (
-      <div className={this.state.pannable ? 'loaded-image pannable' : 'loaded-image'}>
+      <div className={`loaded-image ${this.getImagePannableClass()}`}>
       <img
           alt="Content"
           onMouseDown={ (e) => {
@@ -103,10 +108,6 @@ class App extends Component {
     )
   }
 
-  isPannable(image) {
-    console.log(image.clientWidth, image.offsetHeight);
-  }
-
   openFile() {
     let microscope = this;
     dialog.showOpenDialog(function (file) {
@@ -124,10 +125,21 @@ class App extends Component {
 
   startPan(e) {
     e.preventDefault()
+
+    if(!this.state.pannable) {
+      return;
+    }
+
+    document.body.style.cursor = "grabbing";
     console.log('should pan');
   }
 
   stopPan(e) {
+
+    if(!this.state.pannable) {
+      return;
+    }
+
     console.log('stopped panning');
   }
 
@@ -145,7 +157,9 @@ class App extends Component {
           </div>
         }
 
-        {microscope.viewImage(filePath)}
+        {this.state.showImage &&
+          microscope.viewImage(filePath)
+        }
 
     </div>
     );
