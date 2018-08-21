@@ -140,6 +140,8 @@ class App extends Component {
     }
 
     this.setState({
+      mouseX: e.clientX,
+      mouseY: e.clientY,
       panning: true
     });
   }
