@@ -143,24 +143,21 @@ class App extends Component {
       mouseX: e.clientX,
       mouseY: e.clientY,
       panning: true
-    })
+    });
 
-    // console.log('should pan');
+    console.log('currently at', e.clientX, e.clientY);
   }
 
   imagePan(e) {
+    let { mouseX, mouseY } = this.state;
     if(!this.state.panning) {
       return;
     }
 
-    console.log('Initial mouse X', this.state.mouseX);
-    console.log('Initial mouse Y', this.state.mouseY);
+    let dX = e.clientX - mouseX;
+    let dY = e.clientY - mouseY;
 
-    let x = e.clientX;
-    let y = e.clientY;
-
-    console.log('panning', x, y);
-    window.scrollBy( (this.state.mouseX - e.clientX), (this.state.mouseY - e.clientY) );
+    window.scrollTo(window.scrollX + dX/2, window.scrollY + dY/2);
   }
 
   stopPan(e) {
@@ -171,8 +168,6 @@ class App extends Component {
     this.setState({
       panning: false
     })
-
-    // console.log('stopped panning');
   }
 
   render() {
