@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import _ from 'underscore';
+// import _ from 'underscore';
 const electron = window.require('electron');
 const { remote } = electron;
 const { dialog } = remote;
@@ -15,7 +15,10 @@ class App extends Component {
         width: document.body.clientWidth
       },
       filePath: undefined,
+      mouseX: undefined,
+      mouseY: undefined,
       pannable: false,
+      panning: false,
       showImage: false
     }
   }
@@ -29,6 +32,12 @@ class App extends Component {
         }
       });
       this.handleLoadImage();
+    });
+
+    window.addEventListener('mouseout', () => {
+      this.setState({
+        panning: false
+      })
     });
   }
 
@@ -93,6 +102,10 @@ class App extends Component {
             this.startPan(e)
           }}
 
+          onMouseMove={ (e) => {
+            this.imagePan(e)
+          }}
+
           onMouseUp={ (e) => {
             this.stopPan(e)
           }}
@@ -122,22 +135,44 @@ class App extends Component {
 
   startPan(e) {
     e.preventDefault()
-
     if(!this.state.pannable) {
       return;
     }
 
-    document.body.style.cursor = "grabbing";
-    console.log('should pan');
+    this.setState({
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      panning: true
+    })
+
+    // console.log('should pan');
+  }
+
+  imagePan(e) {
+    if(!this.state.panning) {
+      return;
+    }
+
+    console.log('Initial mouse X', this.state.mouseX);
+    console.log('Initial mouse Y', this.state.mouseY);
+
+    let x = e.clientX;
+    let y = e.clientY;
+
+    console.log('panning', x, y);
+    window.scrollBy( (this.state.mouseX - e.clientX), (this.state.mouseY - e.clientY) );
   }
 
   stopPan(e) {
-
     if(!this.state.pannable) {
       return;
     }
 
-    console.log('stopped panning');
+    this.setState({
+      panning: false
+    })
+
+    // console.log('stopped panning');
   }
 
   render() {
@@ -149,8 +184,8 @@ class App extends Component {
 
         {!this.state.showImage &&
           <div className="splash">
-            <img onClick={function(){microscope.openFile()}} src="./img/splash.svg" alt="Microscope Logo" className="splash-image" />
-            <span className="splash-title">Open an Image File</span>
+            <img onMouseDown={(e) => e.preventDefault()} onClick={function(){microscope.openFile()}} src="./img/splash.svg" alt="Microscope Logo" className="splash-image" />
+            <span onMouseDown={(e) => e.preventDefault()} className="splash-title">Open an Image File</span>
           </div>
         }
 
