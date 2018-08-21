@@ -154,10 +154,17 @@ class App extends Component {
       return;
     }
 
+    setTimeout(
+      this.setState({
+        mouseX: e.clientX,
+        mouseY: e.clientY
+      }), 1
+    )
+
     let dX = e.clientX - mouseX;
     let dY = e.clientY - mouseY;
 
-    window.scrollTo(window.scrollX + dX/2, window.scrollY + dY/2);
+    window.scrollTo(window.scrollX + dX*1.5, window.scrollY + dY*1.5);
   }
 
   stopPan(e) {
