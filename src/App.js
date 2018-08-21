@@ -140,12 +140,8 @@ class App extends Component {
     }
 
     this.setState({
-      mouseX: e.clientX,
-      mouseY: e.clientY,
       panning: true
     });
-
-    console.log('currently at', e.clientX, e.clientY);
   }
 
   imagePan(e) {
