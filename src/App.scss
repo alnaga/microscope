@@ -32,6 +32,9 @@
   &:hover {
     cursor: grab;
   }
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .splash-title {

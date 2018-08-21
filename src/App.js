@@ -53,7 +53,6 @@ class App extends Component {
 
   handleLoadImage() {
     let { imageDimensions = null, windowDimensions } = this.state;
-    // console.log(this.state);
     if(imageDimensions.width > windowDimensions.width || imageDimensions.height > windowDimensions.height){
         this.setState({
           pannable: true
@@ -67,7 +66,6 @@ class App extends Component {
   }
 
   getImagePannableClass() {
-    // console.log(this.state);
     return this.state.pannable ? 'pannable' : '';
   }
 
@@ -109,13 +107,12 @@ class App extends Component {
   }
 
   openFile() {
-    let microscope = this;
-    dialog.showOpenDialog(function (file) {
+    dialog.showOpenDialog((file) => {
       if(file === undefined) {
         return;
       }
       else{
-        microscope.setState({
+        this.setState({
           filePath: file[0],
           showImage: true
         });
