@@ -39,6 +39,16 @@ class App extends Component {
         panning: false
       })
     });
+
+    window.addEventListener('keydown', (e) => {
+      switch(e.key){
+        case 'x':
+          this.handleCloseImage();
+          break;
+        default:
+          return;
+      }
+    });
   }
 
   getImageDimensions = ({ target: image }) => {
@@ -72,6 +82,13 @@ class App extends Component {
         pannable: false
       })
     }
+  }
+
+  handleCloseImage() {
+    this.setState({
+      filePath: undefined,
+      showImage: false
+    });
   }
 
   getImagePannableClass() {
