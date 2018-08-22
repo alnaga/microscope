@@ -37,11 +37,14 @@ class App extends Component {
     window.addEventListener('mouseout', () => {
       this.setState({
         panning: false
-      })
+      });
     });
 
     window.addEventListener('keydown', (e) => {
       switch(e.key){
+        case 'h':
+          console.log('show help');
+          break;
         case 'x':
           this.handleCloseImage();
           break;
@@ -75,12 +78,12 @@ class App extends Component {
     if(imageDimensions.width > windowDimensions.width || imageDimensions.height > windowDimensions.height){
         this.setState({
           pannable: true
-        })
+        });
     }
     else {
       this.setState({
         pannable: false
-      })
+      });
     }
   }
 
