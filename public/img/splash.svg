@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FFFFFF;}
-</style>
-<g>
-	<rect x="601.8" y="0.8" class="st0" width="190.5" height="766.5"/>
-	<path class="st0" d="M791.5,1.5v764.9H602.5V1.5H791.5 M793,0H601v768h192V0L793,0z"/>
-</g>
-<g>
-	<rect x="313.8" y="288.8" class="st0" width="766.5" height="190.5"/>
-	<path class="st0" d="M1079.5,289.5v188.9H314.5V289.5H1079.5 M1081,288H313v192h768V288L1081,288z"/>
-</g>
-</svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768"><defs><style>.cls-1{fill:#fff;}</style></defs><title>splash</title><rect class="cls-1" x="288.8" y="0.8" width="190.5" height="766.5"/><path class="cls-1" d="M476.62,1.5V766.4h-189V1.5h189m1.5-1.5h-192V768h192V0Z" transform="translate(1.88)"/><rect class="cls-1" x="0.8" y="288.8" width="766.5" height="190.5"/><path class="cls-1" d="M764.62,289.5V478.4H-.38V289.5h765m1.5-1.5h-768V480h768V288Z" transform="translate(1.88)"/></svg>

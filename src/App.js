@@ -19,7 +19,8 @@ class App extends Component {
       mouseY: undefined,
       pannable: false,
       panning: false,
-      showImage: false
+      showImage: false,
+      showHelp: false
     }
   }
 
@@ -43,9 +44,13 @@ class App extends Component {
     window.addEventListener('keydown', (e) => {
       switch(e.key){
         case 'h':
-          console.log('show help');
+        e.preventDefault();
+          this.setState({
+            showHelp: !this.state.showHelp
+          })
           break;
         case 'x':
+        e.preventDefault();
           this.handleCloseImage();
           break;
         default:
@@ -54,24 +59,6 @@ class App extends Component {
     });
   }
 
-  getImageDimensions = ({ target: image }) => {
-    if(!this.state.showImage){
-      return;
-    }
-
-    this.setState({
-      imageDimensions:{
-        height: image.offsetHeight,
-        width: image.offsetWidth
-      }
-    });
-
-    setTimeout(
-      () => {
-        this.handleLoadImage();
-      }, 1
-    );
-  }
 
   handleLoadImage() {
     let { imageDimensions = null, windowDimensions } = this.state;
@@ -94,11 +81,18 @@ class App extends Component {
     });
   }
 
-  getImagePannableClass() {
-    return this.state.pannable ? 'pannable' : '';
+  handleDisplayHelp() {
+    return (
+      <div className="help-container">
+        <span className="help-title"> Microscope Help Menu:<br/><br/> </span>
+        h - Toggle help menu<br/>
+		    r - Open rotate menu<br/>
+		    x - Close image<br/>
+      </div>
+    )
   }
 
-  viewImage(filePath) {
+  handleDisplayImage(filePath) {
     filePath = 'file://' + filePath;
     let extension = filePath.split('.').pop().toLowerCase();
     let supportedFileTypes = ['png', 'jpg', 'jpeg'];
@@ -116,7 +110,7 @@ class App extends Component {
 
     return (
       <div className={`loaded-image ${this.getImagePannableClass()}`}>
-      <img
+        <img
           alt="Content"
           onMouseDown={ (e) => {
             this.startPan(e)
@@ -137,6 +131,38 @@ class App extends Component {
           src={filePath} />
       </div>
     )
+  }
+
+  handleDisplayPrompt() {
+    return (
+      <div className="splash">
+        <img onMouseDown={(e) => e.preventDefault()} onClick={() => {this.openFile()}} src="./img/splash.svg" alt="Microscope Logo" className="splash-image" />
+        <span onMouseDown={(e) => e.preventDefault()} className="splash-title">Open an Image File</span>
+      </div>
+    );
+  }
+
+  getImageDimensions = ({ target: image }) => {
+    if(!this.state.showImage){
+      return;
+    }
+
+    this.setState({
+      imageDimensions:{
+        height: image.offsetHeight,
+        width: image.offsetWidth
+      }
+    });
+
+    setTimeout(
+      () => {
+        this.handleLoadImage();
+      }, 1
+    );
+  }
+
+  getImagePannableClass() {
+    return this.state.pannable ? 'pannable' : '';
   }
 
   openFile() {
@@ -196,21 +222,20 @@ class App extends Component {
   }
 
   render() {
-    let microscope = this;
     let { filePath } = this.state;
 
     return (
       <div className="microscope">
 
         {!this.state.showImage &&
-          <div className="splash">
-            <img onMouseDown={(e) => e.preventDefault()} onClick={function(){microscope.openFile()}} src="./img/splash.svg" alt="Microscope Logo" className="splash-image" />
-            <span onMouseDown={(e) => e.preventDefault()} className="splash-title">Open an Image File</span>
-          </div>
+          this.handleDisplayPrompt()
         }
 
+        {this.state.showHelp &&
+          this.handleDisplayHelp()
+        }
         {this.state.showImage &&
-          microscope.viewImage(filePath)
+          this.handleDisplayImage(filePath)
         }
 
     </div>
