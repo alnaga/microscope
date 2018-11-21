@@ -19,6 +19,9 @@ class App extends Component {
       mouseY: undefined,
       pannable: false,
       panning: false,
+      rotation: {
+        transform: 'rotate(0deg)'
+      },
       showImage: false,
       showHelp: false
     }
@@ -44,13 +47,21 @@ class App extends Component {
     window.addEventListener('keydown', (e) => {
       switch(e.key){
         case 'h':
-        e.preventDefault();
+          e.preventDefault();
           this.setState({
             showHelp: !this.state.showHelp
           })
           break;
+        case 'l':
+          e.preventDefault();
+          this.handleRotateLeft();
+          break;
+        case 'r':
+          e.preventDefault();
+          this.handleRotateRight();
+          break;
         case 'x':
-        e.preventDefault();
+          e.preventDefault();
           this.handleCloseImage();
           break;
         default:
@@ -62,6 +73,11 @@ class App extends Component {
 
   handleLoadImage() {
     let { imageDimensions = null, windowDimensions } = this.state;
+    this.setState({
+      rotation: {
+        transform: 'rotate(0deg)'
+      }
+    })
     if(imageDimensions.width > windowDimensions.width || imageDimensions.height > windowDimensions.height){
         this.setState({
           pannable: true
@@ -81,13 +97,46 @@ class App extends Component {
     });
   }
 
+  handleRotateLeft() {
+    let rotate = this.state.rotation.transform;
+    rotate = parseInt(rotate.substring(7, rotate.length-4));
+    if(rotate == 0){
+      rotate = 355;
+    }
+    else{
+      rotate = rotate - 5;
+    }
+    this.setState({
+      rotation: {
+        transform: "rotate(" + (rotate) + "deg)"
+      }
+    });
+  }
+
+  handleRotateRight() {
+    let rotate = this.state.rotation.transform;
+    rotate = parseInt(rotate.substring(7, rotate.length-4));
+    if(rotate == 355){
+      rotate = 0;
+    }
+    else{
+      rotate = rotate + 5;
+    }
+    this.setState({
+      rotation: {
+        transform: "rotate(" + (rotate) + "deg)"
+      }
+    });
+  }
+
   handleDisplayHelp() {
     return (
       <div className="help-container">
         <span className="help-title"> Microscope Help Menu:<br/><br/> </span>
         h - Toggle help menu<br/>
-		    r - Open rotate menu<br/>
-		    x - Close image<br/>
+        l - Rotate Left<br/>
+        r - Rotate Right<br/>
+        x - Close Image<br/>
       </div>
     )
   }
@@ -128,7 +177,9 @@ class App extends Component {
             this.getImageDimensions
           }
 
-          src={filePath} />
+          src={filePath}
+
+          style={this.state.rotation} />
       </div>
     )
   }
