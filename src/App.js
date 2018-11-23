@@ -189,7 +189,6 @@ class App extends Component {
       <div className="splash">
         <img onMouseDown={(e) => e.preventDefault()} onClick={() => {this.openFile()}} src="./img/splash.svg" alt="Microscope Logo" className="splash-image" />
         <span onMouseDown={(e) => e.preventDefault()} className="splash-title">Open an Image File</span>
-        <span onMouseDown={(e) => e.preventDefault()} className="splash-title">Press 'h' to open the Help Menu</span>
       </div>
     );
   }
